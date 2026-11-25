@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>My To-Do Board</title>
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/board-ui.js" defer></script>
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="site-header-inner">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span>My To-Do Board</span>
+        </div>
+        <div id="account-bar" class="account-bar" hidden>
+          <span id="account-name"></span>
+          <button id="sign-out" class="quiet-button" type="button">Sign out</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="page">
+      <p id="app-status" class="status" role="status">Checking your session…</p>
+      <p id="app-error" class="error" role="alert" hidden></p>
+
+      <section id="auth-panel" class="auth-panel" aria-labelledby="auth-heading" hidden>
+        <h1 id="auth-heading">Sign in</h1>
+        <p class="muted">Open your own lists and cards.</p>
+        <form id="auth-form" class="auth-form">
+          <label for="auth-username">Username</label>
+          <input id="auth-username" name="username" autocomplete="username" maxlength="32" required>
+          <label for="auth-password">Password</label>
+          <input id="auth-password" name="password" type="password" autocomplete="current-password" maxlength="128" required>
+          <p id="password-hint" class="field-hint" hidden>Use at least 15 characters.</p>
+          <button id="auth-submit" class="primary-button" type="submit">Sign in</button>
+        </form>
+        <button id="auth-switch" class="text-button" type="button">Create an account</button>
+      </section>
+
+      <section id="board-screen" aria-labelledby="board-heading" hidden>
+        <div id="board-controls">
+          <div class="board-header">
+            <div>
+              <h1 id="board-heading">Your board</h1>
+              <p id="board-summary" class="muted" aria-live="polite"></p>
+            </div>
+            <form id="list-form" class="list-form">
+              <label class="sr-only" for="list-title">New list name</label>
+              <input id="list-title" name="title" placeholder="New list name" maxlength="60" required>
+              <button class="primary-button" type="submit">Add list</button>
+            </form>
+          </div>
+
+          <div id="board-lists" class="board-lists" aria-label="Lists"></div>
+          <p id="empty-board" class="status" hidden>Add a list to start organizing cards.</p>
+        </div>
+
+        <dialog id="edit-dialog" class="edit-dialog" aria-labelledby="edit-heading">
+          <form id="edit-form" class="edit-form">
+            <h2 id="edit-heading">Edit card</h2>
+            <label for="edit-title">Title</label>
+            <input id="edit-title" name="title" required>
+            <div id="move-field" class="move-field">
+              <label for="move-list">Move to list</label>
+              <select id="move-list"></select>
+            </div>
+            <p id="edit-error" class="error" role="alert" hidden></p>
+            <div class="dialog-actions">
+              <button id="delete-card" class="danger-button" type="button">Delete card</button>
+              <button id="cancel-edit" class="quiet-button" type="button">Cancel</button>
+              <button id="save-edit" class="primary-button" type="submit">Save</button>
+            </div>
+          </form>
+        </dialog>
+      </section>
+
+      <template id="list-template">
+        <section class="list-column">
+          <div class="list-header">
+            <span class="list-handle" draggable="true" aria-hidden="true" title="Drag to reorder list">⠿</span>
+            <h2 class="list-title"></h2>
+            <span class="list-count" aria-hidden="true"></span>
+            <details class="list-menu">
+              <summary><span aria-hidden="true">···</span></summary>
+              <div class="menu-items">
+                <button data-action="rename" type="button">Rename list</button>
+                <button data-action="earlier" type="button">Move list earlier</button>
+                <button data-action="later" type="button">Move list later</button>
+                <button data-action="delete" class="danger-button" type="button">Delete list</button>
+              </div>
+            </details>
+          </div>
+          <ul class="card-list"></ul>
+          <form class="card-form">
+            <input name="title" placeholder="New card" maxlength="120" required>
+            <button class="quiet-button" type="submit">Add card</button>
+          </form>
+        </section>
+      </template>
+
+      <template id="card-template">
+        <li class="card" draggable="true">
+          <button class="card-open" type="button"></button>
+        </li>
+      </template>
+
+      <noscript><p>Turn on JavaScript to sign in and use your board.</p></noscript>
+    </main>
+  </body>
+</html>
